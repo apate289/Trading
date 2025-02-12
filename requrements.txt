@@ -1,0 +1,6 @@
+pandas
+scipy
+numpy
+Flask
+flask-mysql
+flask-cors
