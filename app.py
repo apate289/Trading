@@ -1,23 +1,21 @@
-from flask import Flask,Request,Response,jsonify
+from flask import Flask,Request,Response,render_template,send_from_directory
 import flask_cors
 import os,sys,datetime
+#import quotes
+#static_folder='../frontend/dist'
+app = Flask(__name__) #,static_folder='/static', template_folder='/templates') 
 
-import quotes
-
-
-app = Flask(__name__)
-
-quoteObj = quotes.Quotes()
+#quoteObj = quotes.Quotes()
 
 @app.route("/")
 def index():
-    return "<p>Hello, Welcome to Audacika Trading App!</p>"
+    return render_template("index.html")
 
-@app.route("/quote")
+""" @app.route("/quote")
 def quoteStock():
     a = quoteObj.getQuotes()
     
-    return jsonify(a)
+    return jsonify(a) """
 
 #@app.route('/', methods = ['GET', 'POST'])
 #def index():
