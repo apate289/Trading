@@ -22,3 +22,5 @@ class Quotes:
             content = {}
         return stock_data
     
+    def updateStock(self, data):
+        return "Update Stock"
