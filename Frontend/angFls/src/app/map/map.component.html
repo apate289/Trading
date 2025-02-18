@@ -1,0 +1,8 @@
+<label for="cars">Choose a car:</label>
+<select name="cars" id="cars" (change)="changecar($event)">
+  <option value="volvo" [selected] = "Cars == 'volvo'" >Volvo</option>
+  <option value="saab" [selected] = "Cars == 'saab'" >Saab</option>
+  <option value="mercedes" [selected] = "Cars == 'mercedes'" >Mercedes</option>
+  <option value="audi" [selected] = "Cars == 'audi'" >Audi</option>
+</select> 
+
