@@ -13,7 +13,7 @@ export class MapComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.Cars = localStorage.getItem('Cars')  ;
+    this.Cars = window.localStorage.getItem('Cars')  ;
     }
 
   changecar(event :Event) {
@@ -23,6 +23,7 @@ export class MapComponent implements OnInit {
     if (target) console.log((target as HTMLButtonElement).value);
     localStorage.setItem('Cars',(target as HTMLButtonElement).value);
     //window.location.reload()
+    
 
   }
 }
