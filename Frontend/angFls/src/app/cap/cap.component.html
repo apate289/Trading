@@ -1,20 +1,22 @@
 <p>cap works!</p>
-<div>
-    <img src="assets/images/butterfly.jpg" style="width: 100"/>
-</div> 
 <div class="container">
-    <div class="col-9" *ngFor="let item of newdata">
-
-        <h2>Item ID: {{ item.id }}</h2>
-        <p>Status: {{ item.status }}</p>
-        <p>Amount: {{ item.amount }}</p>
-        <div *ngFor="let trans of item.trans">
-            <p>Name: {{ trans.name }}</p>
-            <p>Age: {{ trans.age }}</p>
-            <p>City: {{ trans.city }}</p>
-            <p>Favorite Food: {{ trans.food }}</p>
+    <div class="row " *ngFor="let item of newdata">
+        <div class="col-3">
+            <img src="assets/images/krishna.jpg" />
         </div>
-        <hr>
+        <div class="col align-self-start">
+            <h1>ID: {{ item.id }}</h1>
+            <p>Status: {{ item.status }}</p>
+            <p>Amount: {{ item.amount }}</p>
+            <div class="col align-self-center" *ngFor="let trans of item.trans">
+                <p>Name: {{ trans.name }}</p>
+                <p>Age: {{ trans.age }}</p>
+                <p>City: {{ trans.city }}</p>
+                <p>Favorite Food: {{ trans.food }}</p>
+            </div>
+            <hr>
+        </div>
+
     </div>
 </div>
 
