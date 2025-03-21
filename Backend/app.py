@@ -2,9 +2,11 @@ from flask import Flask,Request,Response,render_template,send_from_directory,jso
 from flask_cors import CORS,cross_origin
 import os,sys,datetime
 from data import my_list
-
+import products
 #import quotes
 #static_folder='../frontend/dist'
+
+pobj=products.Products()
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -33,6 +35,106 @@ def buyer(id):
         return jsonify({'messgae': 'Not enough amount'}), 400
     datalist['amount'] -= price
     return jsonify({'messgae': 'Congratulation, you have enough amount'})
+
+@app.route('/product', methods = ['GET','POST'])
+@cross_origin(origins="*",headers=['Content-Type'])
+def productList():
+    if(request.method =='GET'):
+        data=pobj.getProducts()
+        if(len(data)):
+            response = jsonify ({
+                "result" : data,
+                "status":200
+            })
+        else:
+            response = jsonify ({
+                "result" : None,
+                "status":400
+            })
+        return response
+    elif(request.method =='POST'):
+        data=request.json
+        aData=pobj.createProduct(data)
+        #if(len(data)>0):
+        if(aData==200):
+            response = jsonify({
+                "result" : data,
+                "status":200,
+                "message":"created successfully"
+            })
+        else:
+            response = jsonify ({
+                "result" : None,
+                "status":400,
+                "message":"failed to create"
+            })
+        return response
+    
+@app.route('/product/<int:pid>', methods = ['GET','PUT','DELETE','PATCH','OPTION'])
+@cross_origin(origins="*",headers=['content-type'])
+def changeproductlist(pid):
+    if(request.method =='PUT'):
+        data=request.json
+        aData=pobj.updateProduct(pid,data)
+        if(aData == 200):
+            response = jsonify({
+                "result" : aData,
+                "status":200,
+                "message":"updated successfully"
+            })
+        else:
+            response = jsonify({
+                "result" : aData,
+                "status":400,
+                "message":"Updating failed"
+            })
+        return response
+    elif(request.method =='DELETE'):
+        aData=pobj.deleteProduct(pid)
+        print('aDAta = ',aData)
+        if(aData == 200):
+            response = jsonify({
+                "result" : aData,
+                "status":200,
+                "message":"Delete action successfully"
+            })
+        else:
+            response = jsonify({
+                "result" : aData,
+                "status":400,
+                "message":"Delete action failed"
+            })
+        return response
+    elif(request.method =='PATCH'):
+        response = jsonify ({
+            "result" : None,
+            "status":400,
+            "message":"failed to Patch"
+        })
+        return response
+    elif(request.method =='GET'):
+        response = jsonify ({
+            "result" : None,
+            "status":400,
+            "message":"failed to Get single product"
+        })
+        return response
+    else:
+        return "Option HTTP method"
+    
+
+
+'''
+@app.route('/create')
+def createProductList():
+    data=pobj.createProduct()
+    return jsonify(data)
+
+@app.route('/update')
+def updateProductList():
+    data=pobj.updateProduct()
+    return jsonify(data)'
+    '''
 
 def connect_frontend(list_ele,name):
     result = {}

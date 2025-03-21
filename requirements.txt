@@ -4,3 +4,6 @@ numpy
 Flask
 flask-mysql
 flask-cors
+cryptography
+prettyPrint
+mysqlclient
