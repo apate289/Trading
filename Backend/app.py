@@ -3,6 +3,11 @@ from flask_cors import CORS,cross_origin
 import os,sys,datetime
 from data import my_list
 import products
+from RabbitMQ.rabbitmq import RabbitMQ
+import sys
+
+def callback(ch, method, properties, body):
+    print(f"Received message: {body}")
 #import quotes
 #static_folder='../frontend/dist'
 
@@ -18,7 +23,8 @@ def index():
     name = request.headers.get("Accept-name","Ankit")
     result = list(map(lambda list_ele:connect_frontend(list_ele,name), my_list))
     valid_result = next((item for item in result if item), name)
-    return jsonify(valid_result) #render_template('index.html') 
+    #return jsonify(valid_result) #render_template('index.html')
+    return render_template('index.html') 
 
 @app.route('/cap')
 def post_cap():
@@ -91,7 +97,6 @@ def changeproductlist(pid):
         return response
     elif(request.method =='DELETE'):
         aData=pobj.deleteProduct(pid)
-        print('aDAta = ',aData)
         if(aData == 200):
             response = jsonify({
                 "result" : aData,
@@ -113,11 +118,19 @@ def changeproductlist(pid):
         })
         return response
     elif(request.method =='GET'):
-        response = jsonify ({
-            "result" : None,
-            "status":400,
-            "message":"failed to Get single product"
-        })
+        aData=pobj.getSingleProduct(pid)
+        if(aData != None):
+            response = jsonify({
+                "result" : aData,
+                "status":200,
+                "message":"Get single product successfully"
+            })
+        else:
+            response = jsonify({
+                "result" : aData,
+                "status":400,
+                "message":"Get single product failed"
+            })
         return response
     else:
         return "Option HTTP method"

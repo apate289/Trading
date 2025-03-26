@@ -6,10 +6,12 @@ import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [MapComponent,CapComponent],
+  imports: [MapComponent,CapComponent], //CapComponent
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'Developer';
 }
+
+

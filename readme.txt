@@ -12,7 +12,8 @@ Frontend:
     2. Create a new Angular project by running: ng new angular-python-app --standalone
     3. Change to the project directory: cd angular-python-app
     4. ng build --output-hashing=none
-    
+	5. ng serve
+    6. ng generate component 'component-name' // to create new componenet    
 	
 Docker Hub:
 ankitdock133 -> AnkitDoc133
@@ -38,3 +39,46 @@ Run Docker Hub images:
 		Select Run. When the Optional settings appear, specify the Host port number 8090 and then select Run. You can also select View on Hub to learn more about an image.
 	Explore the Container:
 		Go to the Containers tab in Docker Desktop to view the container.
+
+RabbitMQ (Message Queue):
+	Docker Setup FOr RabbitMQ:
+		Create a docker-compose.yaml file
+			version: '3.8'
+
+			services:
+			rabbitmq:
+				image: rabbitmq:3-management
+				container_name: rabbitmq
+				ports:
+				- '5672:5672'
+				- '15672:15672'
+				environment:
+				RABBITMQ_DEFAULT_USER: guest
+				RABBITMQ_DEFAULT_PASS: guest
+		Start the RabbitMQ container:
+			docker-compose up -d
+	
+	Application Development:
+		Implement the RabbitMQ class (rabbitmq.py):
+			Create a file named main.py in the root of your project directory. Add the following content to the file.
+			This script connects to RabbitMQ and starts consuming messages from a queue named test_queue.
+		Create the publisher.py script:
+			Create a file named publisher.py in the root of your project directory. Add the following content to the file.
+			This script publishes a test message to the test_queue.With these scripts in place, you are ready to run and test your application.
+	Running the Application:
+		Start the RabbitMQ server
+			Run the main.py script to start the RabbitMQ server and begin consuming messages from the test_queue:
+				python main.py -> You should see a message indicating that the connection to RabbitMQ was established successfully. 
+				The script will continue running and wait for messages to consume from the test_queue.
+		Publish a test message:
+			Open a new terminal window or tab, and run the publisher.py script to publish a test message to the test_queue:
+				python publisher.py -> You should see a message indicating that the test message was published successfully. 
+				The main.py script should also display the received message, indicating that the message was successfully consumed from the test_queue.	
+	Example Output:
+		When you run main.py, you should see something like this:
+			Connection to RabbitMQ established successfully.
+			Received message: b'Test message'
+		When you run publisher.py, you should see something like this:
+			Sent message to queue test_queue: Test message
+			Test message published successfully.
+	

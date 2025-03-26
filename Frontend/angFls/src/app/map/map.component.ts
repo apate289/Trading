@@ -13,17 +13,15 @@ export class MapComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.Cars = window.localStorage.getItem('Cars')  ;
+    this.Cars = 'Toyota'; //window.localStorage.getItem('Cars')  ;
     }
 
   changecar(event :Event) {
     const {target} = event;
     //this.selected = value
     console.log("you are in MAP Component");  
-    if (target) console.log((target as HTMLButtonElement).value);
-    localStorage.setItem('Cars',(target as HTMLButtonElement).value);
+    //if (target) console.log((target as HTMLButtonElement).value);
+    //localStorage.setItem('Cars',(target as HTMLButtonElement).value);
     //window.location.reload()
-    
-
   }
 }

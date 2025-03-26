@@ -26,12 +26,11 @@ class Products:
     def createProduct(self, data):
         insert_sql = "INSERT INTO productdb.product ( title, price, description) VALUES (%s, %s, %s)"
         values = (data['title'],data['price'],data['description'])
-        try:
-            self.cursor.execute(insert_sql,values)
-            self.cursor.connection.commit()
-            #self.cursor.connection.close()
+        res=self.cursor.execute(insert_sql,values)
+        self.cursor.connection.commit()
+        if(res==1):
             return 200
-        except:
+        else:
             return 400
     
     def updateProduct(self, id, data):
@@ -44,20 +43,30 @@ class Products:
         values = list(data.values())
         #values.append(id)
         #self.cursor.execute(query,values)
-        try:
-            self.cursor.execute(query)
-            #print(self.cursor._last_executed)
-            self.cursor.connection.commit()
+        res=self.cursor.execute(query)
+        #print(self.cursor._last_executed)
+        self.cursor.connection.commit()
+        if(res==1):
             return 200
-        except:
+        else:
             return 400
     
     def deleteProduct(self, id):
         query = f"DELETE from product WHERE id = {id}"
-        #print('Delete Query : ',query)
-        try:
-            self.cursor.execute(query)
-            self.cursor.connection.commit()
+        res=self.cursor.execute(query)
+        self.cursor.connection.commit()
+        if(res==1):
             return 200
-        except:
+        else:
             return 400
+    
+    def getSingleProduct(self, id):
+        aData = ''
+        query = f"Select * from product WHERE id = {id}"
+        self.cursor.execute(query)
+        aData = self.cursor.fetchall()
+        #self.cursor.connection.commit()
+        if(len(aData)>0):
+            return aData
+        else:
+            return None
