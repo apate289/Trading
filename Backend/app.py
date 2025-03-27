@@ -1,6 +1,6 @@
 from flask import Flask,Request,Response,render_template,send_from_directory,jsonify,request
 from flask_cors import CORS,cross_origin
-import os,sys,datetime
+import os,sys,datetime,pika
 from data import my_list
 import products
 from RabbitMQ.rabbitmq import RabbitMQ
@@ -12,6 +12,7 @@ def callback(ch, method, properties, body):
 #static_folder='../frontend/dist'
 
 pobj=products.Products()
+rabbitmq = RabbitMQ()
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'

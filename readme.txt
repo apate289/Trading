@@ -58,6 +58,11 @@ RabbitMQ (Message Queue):
 		Start the RabbitMQ container:
 			docker-compose up -d
 	
+	Add user to RabbitMQ:(not Tested with CLI)
+		RUN rabbitmqctl add_user {username} {password}
+		RUN rabbitmqctl add_user "Ankit" "Ankit@134"
+		RUN rabbitmqctl set_user_tags {username} administrator
+		RUN rabbitmqctl set_permissions
 	Application Development:
 		Implement the RabbitMQ class (rabbitmq.py):
 			Create a file named main.py in the root of your project directory. Add the following content to the file.
