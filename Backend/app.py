@@ -1,6 +1,6 @@
 from flask import Flask,Request,Response,render_template,send_from_directory,jsonify,request
 from flask_cors import CORS,cross_origin
-import os,sys,datetime,pika
+import os,sys,datetime,pika,json
 from data import my_list
 import products
 from RabbitMQ.rabbitmq import RabbitMQ
@@ -15,7 +15,10 @@ pobj=products.Products()
 rabbitmq = RabbitMQ()
 app = Flask(__name__)
 cors = CORS(app)
+CORS_ORIGINS = ['http://localhost:5000', 'http://127.0.0.1:4200']
 app.config['CORS_HEADERS'] = 'Content-Type'
+queue_name = 'test_queue_2'
+#rabbitmq.(queue=queue_name)
 
 
 @app.route('/')
@@ -24,8 +27,8 @@ def index():
     name = request.headers.get("Accept-name","Ankit")
     result = list(map(lambda list_ele:connect_frontend(list_ele,name), my_list))
     valid_result = next((item for item in result if item), name)
-    #return jsonify(valid_result) #render_template('index.html')
-    return render_template('index.html') 
+    return jsonify(valid_result) #render_template('index.html')
+    #return render_template('index.html') 
 
 @app.route('/cap')
 def post_cap():
@@ -136,6 +139,15 @@ def changeproductlist(pid):
     else:
         return "Option HTTP method"
     
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    data = request.get_json()
+    message = data.get('message', '')
+    
+    # Publish the message to the queue
+    rabbitmq
+    rabbitmq.publish(queue_name, message=json.dumps({'message': message}))
+    return jsonify({'status': 'message sent'})
 
 
 '''

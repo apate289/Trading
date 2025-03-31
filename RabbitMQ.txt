@@ -1,0 +1,52 @@
+Example Commands/Setup:
+
+The following commands should give you the majority if not all of what you need:
+
+# Get the cli and make it available to use.
+wget http://127.0.0.1:15672/cli/rabbitmqadmin
+chmod +x rabbitmqadmin
+mv rabbitmqadmin /etc/rabbitmq
+Add a user and permissions
+
+rabbitmqctl add_user testuser testpassword
+rabbitmqctl set_user_tags testuser administrator
+rabbitmqctl set_permissions -p / testuser ".*" ".*" ".*"
+Make a virtual host and Set Permissions
+
+rabbitmqctl add_vhost Some_Virtual_Host
+rabbitmqctl set_permissions -p Some_Virtual_Host guest ".*" ".*" ".*"
+Make an Exchange
+
+./rabbitmqadmin declare exchange --vhost=Some_Virtual_Host name=some_exchange type=direct
+Make a Queue
+
+./rabbitmqadmin declare queue --vhost=Some_Virtual_Host name=some_outgoing_queue durable=true
+Make a Binding
+
+./rabbitmqadmin --vhost="Some_Virtual_Host" declare binding source="some_exchange" destination_type="queue" destination="some_incoming_queue" routing_key="some_routing_key"
+Alternative Way to Bind with Python
+
+The following is an alternative to command line binding, as I've had issues with it sometimes and found the following python code to be more reliable.
+
+#!/usr/bin/env python
+import pika
+
+rabbitmq_host = "127.0.0.1"
+rabbitmq_port = 5672
+rabbitmq_virtual_host = "Some_Virtual_Host"
+rabbitmq_send_exchange = "some_exchange" 
+rabbitmq_rcv_exchange = "some_exchange"
+rabbitmq_rcv_queue = "some_incoming_queue"
+rabbitmq_rcv_key = "some_routing_key"
+
+outgoingRoutingKeys = ["outgoing_routing_key"]
+outgoingQueues = ["some_outgoing_queue "]
+
+# The binding area
+credentials = pika.PlainCredentials(rabbitmq_user, rabbitmq_password)
+connection = pika.BlockingConnection(pika.ConnectionParameters(rabbitmq_host, rabbitmq_port, rabbitmq_virtual_host, credentials))
+channel = connection.channel()
+channel.queue_bind(exchange=rabbitmq_rcv_exchange, queue=rabbitmq_rcv_queue, routing_key=rabbitmq_rcv_key)
+
+for index in range(len(outgoingRoutingKeys)):
+    channel.queue_bind(exchange=rabbitmq_send_exchange, queue=outgoingQueues[index], routing_key=out

@@ -1,5 +1,5 @@
 #from rabbitmq import RabbitMQ
-import sys
+#import sys
 #
 #def callback(ch, method, properties, body):
 #    print(f"Received message: {body}")

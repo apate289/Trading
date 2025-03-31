@@ -1,0 +1,23 @@
+nav {
+    display: flex;
+    direction: rtl;
+    background-color: beige;
+    font-style: oblique;
+    font-weight: bold;
+}
+element.style {
+    display: flex;
+    background: beige;
+    font-style: oblique;
+    font-weight: 500;
+    margin-left: 10px;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+ul {
+    display: flex
+;
+    list-style: none;
+    width: 180px;
+    justify-content: space-between;
+}
