@@ -1,0 +1,40 @@
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <title> register </title>
+   </head>
+   <body>
+      <div class="registercontent" alignment="center">
+         <div class="registertop">
+            <h1>Register</h1>
+         </div>
+         <div class="registerbottom">
+            <!--<form action="{{ url_for('register')}}" method="post" autocomplete="off">-->
+            <form [formGroup]="input" (ngSubmit)="onSubmit()" method="post" autocomplete="off">
+               <div class="msg">{{ msg }}</div> 
+               <input type="text" name="userName" placeholder="Enter Your User Name" class="textbox" id="username" formControlName="userName">
+               <input type="text" name="FirstName" placeholder="Enter Your First name" class="textbox" id="FirstName" formControlName="FirstName">
+               <input type="text" name="LastName" placeholder="Enter Your Last Name" class="textbox" id="LastName" formControlName="LastName">
+               <input type="email" name="mobile" placeholder="Enter Your Mobile No" class="textbox" id="mobile" formControlName="mobile">
+               <input type="email" name="email" placeholder="Enter Your Email ID" class="textbox" id="email" formControlName="email">
+               <input type="text" name="address" placeholder="Enter Your Address" class="textbox" id="address" formControlName="address">
+               <input type="text" name="city" placeholder="Enter Your City" class="textbox" id="city" formControlName="city">
+               <input type="text" name="state" placeholder="Enter Your State" class="textbox" id="state" formControlName="state">
+               <input type="text" name="country" placeholder="Enter Your Country" class="textbox" id="country" formControlName="country">
+			   <input type="text" name="postalcode" placeholder="Enter Your Postal Code" class="textbox" id="postalcode" formControlName="postalcode">
+			   <input type="text" name="password" placeholder="Enter Your password" class="textbox" id="password" formControlName="password" >
+               <!--<input type="password" id="password" name="password" [(ngModel)]="password" required>
+               <nav class="navbar navbar-light bg-primary mb-4">
+                <a class="navbar-brand" href="#">
+                  <h1 class="text-light text-center font-weight-bold">
+                    Show / Hide Password
+                  </h1>
+                </a>
+               </nav>-->
+			   <input type="submit" class="btn" value="Register">
+               <!--<button type="submit">Submit</button>-->
+            </form>
+         </div>
+      </div>
+   </body>
+</html>

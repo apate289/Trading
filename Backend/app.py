@@ -1,21 +1,26 @@
 from flask import Flask,Request,Response,render_template,send_from_directory,jsonify,request
 from flask_cors import CORS,cross_origin
 import os,sys,datetime,pika,json
+#from forms import 
 from data import my_list
 import products
+import bcrypt
 from RabbitMQ.rabbitmq import RabbitMQ
+from users import userProfile
+
 import sys
 
 def callback(ch, method, properties, body):
     print(f"Received message: {body}")
 #import quotes
-#static_folder='../frontend/dist'
+static_folder='../frontend/angFls/dist/server'
 
 pobj=products.Products()
 rabbitmq = RabbitMQ()
-app = Flask(__name__)
+usr = userProfile()
+app = Flask(__name__,static_folder=static_folder)
 cors = CORS(app)
-CORS_ORIGINS = ['http://localhost:5000', 'http://127.0.0.1:4200']
+CORS_ORIGINS = ['http://localhost:5000/', 'http://127.0.0.1:4200/']
 app.config['CORS_HEADERS'] = 'Content-Type'
 queue_name = 'test_queue_2'
 #rabbitmq.(queue=queue_name)
@@ -27,8 +32,8 @@ def index():
     name = request.headers.get("Accept-name","Ankit")
     result = list(map(lambda list_ele:connect_frontend(list_ele,name), my_list))
     valid_result = next((item for item in result if item), name)
-    return jsonify(valid_result) #render_template('index.html')
-    #return render_template('index.html') 
+    #return jsonify(valid_result) #render_template('index.html')
+    return render_template('index.server.html') 
 
 @app.route('/cap')
 def post_cap():
@@ -138,6 +143,45 @@ def changeproductlist(pid):
         return response
     else:
         return "Option HTTP method"
+
+
+@app.route('/register',methods=['GET','POST'])
+#@cross_origin(origins="*",headers=['content-type'])
+def CreateUser():
+  if request.method=='POST':
+    data = request.get_json()#request.form()
+    print('Data = ',data)
+    return jsonify({'message': 'Profile updated successfully'})
+    username=request.form(['username'])
+    password=request.form(['password'])
+    #Validate the received VALUES
+    if username and password and request.method == 'POST':
+        getdata = usr.register(username,password) 
+        if(getdata == 200):
+            response = jsonify({
+                    "result" : 'Registration callback 200',
+                    "status":200,
+                    "message":"User profile created successfully"
+                })
+        else:
+            response = jsonify({
+                    "result" : 'Registration callback 400',
+                    "status":400,
+                    "message":"User already exist"
+                })
+        return response #render_template('index.html', username=username)
+    else:
+        return jsonify({
+                    "result" : 'Error while adding user',
+                    "status":400,
+                    "message":"User profile creation failed"
+                })
+
+@app.route('/login/<int:pid>', methods = ['GET','POST','PUT','DELETE','PATCH','OPTION'])
+@cross_origin(origins="*",headers=['content-type'])
+def userLogin(usrnm, pswd):
+    return
+
     
 @app.route('/send_message', methods=['POST'])
 def send_message():

@@ -6,11 +6,15 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MessageServiceComponent } from './message-service/message-service.component';
 import { HomeComponent } from './home/home.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserloginComponent } from './userlogin/userlogin.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'map', component: MapComponent },
     { path: 'cap', component: CapComponent },
+    { path: 'login', component: UserloginComponent },
+    { path: 'profile', component: UserProfileComponent },
     { path: 'message', component: MessageServiceComponent },
     //{ path: 'home', component: HomeComponent },
     //{ path: 'home', component: HomeComponent },
@@ -24,9 +28,9 @@ export const routes: Routes = [
 @NgModule({
     imports: [BrowserModule, RouterModule,
       //RouterModule.forRoot(routes) // routes is your array of Route objects
-    ],
+    ],  
     providers: [],
-    //exports: [RouterModule] // Ensure RouterModule is exported if in a shared module
+    exports: [RouterModule] // Ensure RouterModule is exported if in a shared module
   })
 
 export class RoutingModule { }

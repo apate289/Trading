@@ -13,7 +13,8 @@ Frontend:
     3. Change to the project directory: cd angular-python-app
     4. ng build --output-hashing=none
 	5. ng serve
-    6. ng generate component 'component-name' // to create new componenet    
+    6. ng generate component 'component-name' // to create new componenets   
+    7. ng generate service 'service-name' // to create new services   
 	
 Docker Hub:
 ankitdock133 -> AnkitDoc133

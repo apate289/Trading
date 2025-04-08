@@ -10,6 +10,10 @@ class Products:
         #self.cursor.execute("SELECT * FROM product")
         self.cursor.execute("SELECT * FROM product")
         aData = self.cursor.fetchall()
+        #final_result = [i[0] for i in aData]
+        #for i in aData:
+        #   print(i[1])
+            
         payload = []
         content = {}
         for result in aData:

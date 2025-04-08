@@ -14,3 +14,4 @@ app = Flask(__name__)
 
 db=MySQLdb.connect(host="localhost",user="Ankit",
                   password="Ankit@134",database="productdb")
+#userdb=MySQLdb.connect(host="localhost",user="Ankit",password="Ankit@134",database="productdb")
