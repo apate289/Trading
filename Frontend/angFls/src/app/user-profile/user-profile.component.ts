@@ -4,17 +4,18 @@ import { FormControl, FormGroup, FormsModule, Validator } from '@angular/forms';
 //import { Router } from 'express';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { response } from 'express';
+import { NgIf } from '@angular/common';
 
 
 @Component({
   selector: 'app-user-profile',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule,NgIf],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent implements OnInit {
   input: FormGroup;
-  username: string = '';
   profile: any;
   msg = 'We are in user-profile....'
 
@@ -35,18 +36,19 @@ export class UserProfileComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.profile = '/login'; //'/api/submit';
+    //this.profile = '/login'; //'/api/submit';
+    this.register();
   }
 
   
   onSubmit() {
-      this.http.post('http://localhost:5000/register', this.input.value)//, { headers: headers })
-      .subscribe(() =>
-          console.log('Form submitted 1...', this.input.value)
-          //this.router.navigate(['/login'])
-      );
+    this.http.post('http://localhost:5000/register', this.input.value)//, { headers: headers })
+    .subscribe((res) => this.profile=res
+        //this.router.navigate(['/login'])
+        //console.log('Form submitted 1...', this.input.value)
+    );
     // Handle form submission logic here
-    console.log('Form submitted', this.input);
+    console.log('Response received :', this.input.value);
   }
   
   public register() {

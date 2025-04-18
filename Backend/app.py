@@ -1,4 +1,4 @@
-from flask import Flask,Request,Response,render_template,send_from_directory,jsonify,request
+from flask import Flask,session,Request,Response,render_template,send_from_directory,jsonify,request
 from flask_cors import CORS,cross_origin
 import os,sys,datetime,pika,json
 #from forms import 
@@ -148,39 +148,74 @@ def changeproductlist(pid):
 @app.route('/register',methods=['GET','POST'])
 #@cross_origin(origins="*",headers=['content-type'])
 def CreateUser():
-  if request.method=='POST':
-    data = request.get_json()#request.form()
-    print('Data = ',data)
-    return jsonify({'message': 'Profile updated successfully'})
-    username=request.form(['username'])
-    password=request.form(['password'])
-    #Validate the received VALUES
-    if username and password and request.method == 'POST':
-        getdata = usr.register(username,password) 
-        if(getdata == 200):
-            response = jsonify({
-                    "result" : 'Registration callback 200',
-                    "status":200,
-                    "message":"User profile created successfully"
-                })
-        else:
-            response = jsonify({
-                    "result" : 'Registration callback 400',
-                    "status":400,
-                    "message":"User already exist"
-                })
-        return response #render_template('index.html', username=username)
-    else:
-        return jsonify({
-                    "result" : 'Error while adding user',
-                    "status":400,
-                    "message":"User profile creation failed"
-                })
+    if request.method=='POST':
+        data = request.get_json()#request.form()
+        print(data)
+        username=data['userName']
+        password=data['password']
+        #Validate the received VALUES
+        if username and password and request.method == 'POST':
+            getdata = usr.register(data)
+            #print('\n\n\n')
+            #print(getdata)
+            if(getdata == 200):
+                response = jsonify({
+                        "result" : 'Registration callback 200',
+                        "status":200,
+                        "message":"User profile created successfully"
+                    })
+            elif(getdata == 400):
+                response = jsonify({
+                        "result" : 'Registration callback 400',
+                        "status":400,
+                        "message":"User profile creation failed"
+                    })
+            elif(getdata == 501):
+                response = jsonify({
+                        "result" : 'Registration callback 501',
+                        "status":501,
+                        "message":"User already exist. Please add another userrname"
+                    })
+            else:
+                response = jsonify({
+                        "result" : 'Registration callback 401',
+                        "status":401,
+                        "message":"Unauthorized user"
+                    })
+            return response #render_template('index.html', username=username)
+    elif (request.method=='GET'):
+        return jsonify({})
 
-@app.route('/login/<int:pid>', methods = ['GET','POST','PUT','DELETE','PATCH','OPTION'])
-@cross_origin(origins="*",headers=['content-type'])
-def userLogin(usrnm, pswd):
-    return
+
+@app.route('/login', methods = ['GET','POST'])
+def userLogin():
+    response = jsonify({})
+    if request.method=='POST':
+        data = request.get_json()#request.form()
+        #print(data)
+        #username=data['userName']
+        #password=data['password']
+        usrData = usr.login(data)
+        if(usrData == 200):
+            response = jsonify({
+                    "result" : 'Login callback 200',
+                    "status":200,
+                    "message":"User authenticated successfully"
+                })
+            response = render_template('')
+        elif(usrData == 400):
+            response = jsonify({
+                    "result" : 'Login callback 400',
+                    "status":400,
+                    "message":"User does not exist"
+                })
+        else: #(usrData == 40):
+            response = jsonify({
+                    "result" : 'Login callback 404',
+                    "status":404,
+                    "message":"User authentication failed"
+                })
+    return response
 
     
 @app.route('/send_message', methods=['POST'])

@@ -1,25 +1,47 @@
-<form action="action_page.php" method="post">
-  <div class="imgcontainer">
-    <img src="assets/images/login_img.PNG" alt="Avatar" class="avatar">
-  </div>
-
-  <div class="container">
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
-
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
-
-    <button type="submit">Login</button>
-    <label>
-      <input type="checkbox" checked="checked" name="remember"> Remember me
-    </label>
-  </div>
-
-</form>
-
-<div class="container" style="background-color:#f1f1f1">
-  <button type="button" class="cancelbtn">Cancel</button>
-  <button routerLink="/profile">Create Profile</button>
-  <span class="psw">Forgot <a href="#">password?</a></span>
+<div class="imgcontainer">
+  <img src="assets/images/login_img.PNG" alt="Avatar" class="avatar">
 </div>
+
+<div class="login-container">
+  <h2>Login</h2>
+  <div *ngIf="isLoggedIn; else loggedInTemplate">
+    <form [formGroup]="userInput" (ngSubmit)="onSubmit()" method="post">
+      <div>
+      <label for="userName">userName:</label>
+      <input type="userName" id="userName" formControlName="userName">
+      <!--
+      <div *ngIf="userInput.get('userName').invalid && (userInput.get('userName').dirty || userInput.get('userName').touched)">
+          <small *ngIf="userInput.get('userName').errors?.required">userName is required.</small>
+          <small *ngIf="userInput.get('userName').errors?.userName">Invalid userName format.</small>
+      </div>
+      -->
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" formControlName="password">
+     <!--
+      <div *ngIf="userInput.get('password').invalid && (userInput.get('password').dirty || userInput.get('password').touched)">
+          <small *ngIf="userInput.get('password').errors?.required">Password is required.</small>
+      </div>
+      -->
+    </div>
+      <!--<button type="submit" [disabled]="userInput.invalid">Login</button>-->
+      <!--<button type="submit" >Login</button>-->
+      <button (click)="login()">Login</button>
+    </form>
+    <label><input type="checkbox" checked="checked" name="remember"> Remember me</label>
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" class="cancelbtn">Cancel</button>
+      <button routerLink="/profile">Create Profile</button>
+      <span class="psw">Forgot <a href="#">password?</a></span>
+    </div>
+  </div>
+  <ng-template #loggedInTemplate>
+    <div>
+      Welcome, user!
+      <button (click)="logout()">Logout</button>
+    </div>
+  </ng-template>
+</div>
+
+

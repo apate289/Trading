@@ -35,6 +35,17 @@
                <!--<button type="submit">Submit</button>-->
             </form>
          </div>
+         <!--<p *ngIf="profile">Received Profile Status from Flask: {{ profile }}</p>-->
       </div>
+      <!--<div *ngIf="profile; else noData">-->
+      <div *ngIf="profile; else noData">
+        <h2>{{ profile.message  }}</h2>
+        <p>{{ profile.result }}</p>
+        <p>{{ profile.status }}</p>
+      </div>
+      
+      <ng-template #noData>
+        <div> </div>
+      </ng-template>
    </body>
 </html>
